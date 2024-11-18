@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة العمر</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f3f4f6;
+            direction: rtl;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        select {
+            margin-top: 10px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="title">حاسبة العمر</h1>
+        <label id="birthLabel">تاريخ ميلادك:</label><br>
+        <input type="date" id="birthDate"><br>
+        <button onclick="calculateAge()">احسب العمر</button>
+        <button onclick="resetForm()">إعادة التعيين</button>
+        <p id="result"></p>
+        <select id="language" onchange="changeLanguage()">
+            <option value="ar">عربي</option>
+            <option value="en">English</option>
+        </select>
+    </div>
+
+    <script>
+        function calculateAge() {
+            const birthDate = document.getElementById('birthDate').value;
+            if (!birthDate) {
+                alert("الرجاء إدخال تاريخ ميلادك!");
+                return;
+            }
+            const birth = new Date(birthDate);
+            const today = new Date();
+            let age = today.getFullYear() - birth.getFullYear();
+            const monthDiff = today.getMonth() - birth.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                age--;
+            }
+            document.getElementById('result').textContent = 
+                (document.getElementById('language').value === 'ar') 
+                ? `عمرك هو: ${age} سنة` 
+                : `Your age is: ${age} years`;
+        }
+
+        function resetForm() {
+            document.getElementById('birthDate').value = '';
+            document.getElementById('result').textContent = '';
+        }
+
+        function changeLanguage() {
+            const lang = document.getElementById('language').value;
+            if (lang === 'ar') {
+                document.documentElement.setAttribute("dir", "rtl");
+                document.getElementById('title').textContent = "حاسبة العمر";
+                document.getElementById('birthLabel').textContent = "تاريخ ميلادك:";
+                document.querySelector("button:nth-child(2)").textContent = "احسب العمر";
+                document.querySelector("button:nth-child(3)").textContent = "إعادة التعيين";
+            } else {
+                document.documentElement.setAttribute("dir", "ltr");
+                document.getElementById('title').textContent = "Age Calculator";
+                document.getElementById('birthLabel').textContent = "Your Birthdate:";
+                document.querySelector("button:nth-child(2)").textContent = "Calculate Age";
+                document.querySelector("button:nth-child(3)").textContent = "Reset";
+            }
+        }
+    </script>
+</body>
+</html>
